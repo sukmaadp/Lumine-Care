@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-// Import Model
 import 'model/cart.dart';
-
-// Import Pages
 import 'pages/splash_page.dart';
 import 'pages/login_page.dart';
 import 'pages/dashboard_page.dart';
@@ -34,7 +30,6 @@ class MyApp extends StatelessWidget {
         '/splash': (context) => const SplashPage(),
         '/login': (context) => const LoginPage(),
         '/dashboard': (context) {
-          // ✅ Ambil email dari login
           final args = ModalRoute.of(context)?.settings.arguments as String?;
           return DashboardPage(email: args ?? "user@mail.com");
         },
