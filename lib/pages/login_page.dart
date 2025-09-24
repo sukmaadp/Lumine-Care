@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
     } else if (password.length < 6) {
       _showMessage("Password minimal 6 karakter");
     } else {
-      // ✅ Navigasi ke Dashboard dengan email user
+      //Navigasi ke Dashboard dengan email user
       Navigator.pushReplacementNamed(context, '/dashboard', arguments: email);
     }
   }
