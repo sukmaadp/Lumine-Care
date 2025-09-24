@@ -26,7 +26,7 @@ class _SplashPageState extends State<SplashPage>
 
     _controller.forward();
 
-    // ⏳ Pindah otomatis ke Login
+    //Pindah otomatis ke Login
     Timer(const Duration(seconds: 3), () {
       if (mounted) {
         Navigator.pushReplacementNamed(context, '/login');
@@ -51,7 +51,7 @@ class _SplashPageState extends State<SplashPage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // ✅ Logo Aplikasi
+                //Logo Aplikasi
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: Image.asset(
@@ -63,7 +63,7 @@ class _SplashPageState extends State<SplashPage>
                 ),
                 const SizedBox(height: 20),
 
-                // ✅ Nama Aplikasi
+                //Nama Aplikasi
                 const Text(
                   "Luminé",
                   style: TextStyle(
@@ -75,14 +75,14 @@ class _SplashPageState extends State<SplashPage>
                 ),
                 const SizedBox(height: 8),
 
-                // ✅ Nama Pembuat
+                //Nama Pembuat
                 const Text(
                   "Creat by: Sukma Dwi Pangesti",
                   style: TextStyle(fontSize: 16, color: Colors.white70),
                 ),
                 const SizedBox(height: 30),
 
-                // ✅ Loading Indicator
+                //Loading Indicator
                 const CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
