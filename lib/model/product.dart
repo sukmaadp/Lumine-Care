@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Base class Product (Encapsulation)
+/// Base class Product
 class Product {
   String _name;
   double _price;
@@ -31,7 +31,7 @@ class Product {
   String get description => _description;
   double get rating => _rating;
 
-  /// Setter (dengan validasi sederhana)
+  /// Setter 
   set name(String value) {
     if (value.isNotEmpty) _name = value;
   }
@@ -55,7 +55,7 @@ class Product {
   }
 }
 
-/// Subclass SkincareProduct (Inheritance + Polymorphism)
+/// Subclass SkincareProduct
 class SkincareProduct extends Product {
   SkincareProduct({
     required String name,
@@ -73,7 +73,7 @@ class SkincareProduct extends Product {
        );
 }
 
-/// Subclass HaircareProduct (Inheritance + Polymorphism)
+/// Subclass HaircareProduct
 class HaircareProduct extends Product {
   HaircareProduct({
     required String name,
@@ -91,7 +91,7 @@ class HaircareProduct extends Product {
        );
 }
 
-/// Subclass BodycareProduct (Inheritance + Polymorphism)
+/// Subclass BodycareProduct
 class BodycareProduct extends Product {
   BodycareProduct({
     required String name,
