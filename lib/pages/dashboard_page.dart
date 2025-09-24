@@ -7,7 +7,6 @@ import 'cart_page.dart';
 import 'profile_page.dart';
 import 'settings_page.dart';
 
-/// CustomTopBar yang responsif (tidak overflow)
 class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   final int cartCount;
   final Function(String) onSearch;
@@ -23,7 +22,6 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    // searchWidth maksimal 140, atau 35% layar kalau lebih kecil
     double searchWidth = screenWidth * 0.35;
     if (searchWidth > 140) searchWidth = 140;
 
@@ -47,7 +45,6 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         child: Row(
           children: [
-            // Menu button dengan lebar terbatas supaya tidak melebar
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 92),
               child: OutlinedButton.icon(
@@ -63,7 +60,6 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                   foregroundColor: Colors.purple,
                 ),
                 onPressed: () {
-                  // buka drawer
                   Scaffold.of(context).openDrawer();
                 },
                 icon: const Icon(Icons.menu, size: 18),
@@ -71,10 +67,9 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
 
-            // Jarak kecil
             const SizedBox(width: 8),
 
-            // Judul di-expand agar fleksibel dan memotong teks jika sempit
+            // Judul di-expand biar di tengah
             Expanded(
               child: Center(
                 child: Text(
@@ -91,11 +86,11 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
 
-            // Area kanan (search + profile + cart) -> minimal size agar tidak memaksa Row melebihi layar
+            // Area kanan (search + profile + cart)
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Search box dengan lebar dinamis
+                // Search box
                 Container(
                   width: searchWidth,
                   height: 36,
@@ -126,7 +121,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
 
                 const SizedBox(width: 8),
 
-                // Profile icon (gunakan IconButton => tidak terlalu besar)
+                // Profile icon
                 IconButton(
                   icon: const Icon(Icons.person, color: Colors.purple),
                   onPressed: () {
@@ -191,7 +186,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(60);
 }
 
-/// Halaman Dashboard (background putih, kategori rapi)
+/// Halaman Dashboard
 class DashboardPage extends StatefulWidget {
   final String email;
   const DashboardPage({super.key, required this.email});
