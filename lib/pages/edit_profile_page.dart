@@ -55,17 +55,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.purple,
-                foregroundColor: Colors.white, // ✅ teks putih
+                foregroundColor: Colors.white, 
                 padding: const EdgeInsets.symmetric(
                   horizontal: 40,
                   vertical: 14,
-                ), // lebih besar
+                ), 
                 textStyle: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30), // biar lebih rounded
+                  borderRadius: BorderRadius.circular(30), 
                 ),
               ),
               onPressed: () {
