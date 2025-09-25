@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
     } else if (password.length < 6) {
       _showMessage("Password minimal 6 karakter");
     } else {
-      // ✅ Navigasi ke Dashboard dengan email user
+      //Navigasi ke Dashboard dengan email user
       Navigator.pushReplacementNamed(context, '/dashboard', arguments: email);
     }
   }
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 15),
                     const Text(
-                      "Welcome to Luminé",
+                      "Welcome to Luminé Care",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

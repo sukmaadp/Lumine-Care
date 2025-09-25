@@ -8,7 +8,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<CartModel>(context); // ✅ ambil dari Provider
+    final cart = Provider.of<CartModel>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +30,7 @@ class CartPage extends StatelessWidget {
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () {
-                        cart.remove(product); // ✅ hapus lewat provider
+                        cart.remove(product);
                       },
                     ),
                   ),
@@ -53,7 +53,7 @@ class CartPage extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.purple,
-                foregroundColor: Colors.white, // ✅ teks & icon putih jelas
+                foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
                   vertical: 12,
@@ -70,7 +70,7 @@ class CartPage extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Checkout berhasil!")),
                 );
-                cart.clear(); // ✅ kosongkan keranjang
+                cart.clear();
               },
               child: const Text("Checkout"),
             ),
