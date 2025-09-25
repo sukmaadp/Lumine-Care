@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart'; // ✅ Tambah import intl
 import '../model/product.dart';
 import '../model/cart.dart';
 
@@ -8,6 +9,17 @@ class DetailPage extends StatelessWidget {
 
   const DetailPage({super.key, required this.product});
 
+  // ✅ Tambah formatter untuk harga rupiah
+  String formatRupiah(double price) {
+    final format = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+    return format.format(price);
+  }
+
+  // ✅ Deskripsi berdasarkan kategori
   String getDescription() {
     switch (product.category) {
       case "Skincare":
@@ -102,9 +114,9 @@ class DetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Harga
+            // ✅ Harga dengan format rupiah
             Text(
-              "Rp ${product.price.toStringAsFixed(0)}",
+              formatRupiah(product.price),
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -124,10 +136,9 @@ class DetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Divider halus
             Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
 
-            // Deskripsi
+            // Deskripsi produk
             Text(
               getDescription(),
               style: const TextStyle(fontSize: 15, color: Colors.black54),
@@ -136,13 +147,13 @@ class DetailPage extends StatelessWidget {
 
             const Spacer(),
 
-            // Tombol Tambah ke Keranjang
+            // Tombol tambah ke keranjang
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.purple,
-                  foregroundColor: Colors.white, // ✅ biar tulisan & icon jelas
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     vertical: 16,
                     horizontal: 24,

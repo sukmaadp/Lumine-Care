@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfilePage extends StatefulWidget {
-  final String currentName;
-  final String currentEmail;
+  final String name;
+  final String email;
 
-  const EditProfilePage({
-    super.key,
-    required this.currentName,
-    required this.currentEmail,
-  });
+  const EditProfilePage({super.key, required this.name, required this.email});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -21,8 +18,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: widget.currentName);
-    emailController = TextEditingController(text: widget.currentEmail);
+    nameController = TextEditingController(text: widget.name);
+    emailController = TextEditingController(text: widget.email);
+  }
+
+  Future<void> _saveProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_name', nameController.text);
+    await prefs.setString('user_email', emailController.text);
+    if (!mounted) return;
+    Navigator.pop(context, true);
   }
 
   @override
@@ -33,7 +38,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         backgroundColor: Colors.purple,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             TextField(
@@ -51,30 +56,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-                foregroundColor: Colors.white, // ✅ teks putih
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 14,
-                ), // lebih besar
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30), // biar lebih rounded
-                ),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+              onPressed: _saveProfile,
+              child: const Text(
+                "Simpan Perubahan",
+                style: TextStyle(color: Colors.white),
               ),
-              onPressed: () {
-                Navigator.pop(context, {
-                  "name": nameController.text,
-                  "email": emailController.text,
-                });
-              },
-              child: const Text("Simpan"),
             ),
           ],
         ),

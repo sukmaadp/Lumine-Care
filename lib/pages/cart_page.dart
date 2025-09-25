@@ -8,7 +8,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<CartModel>(context); 
+    final cart = Provider.of<CartModel>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -53,7 +53,7 @@ class CartPage extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.purple,
-                foregroundColor: Colors.white, 
+                foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
                   vertical: 12,
@@ -70,7 +70,7 @@ class CartPage extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Checkout berhasil!")),
                 );
-                cart.clear(); 
+                cart.clear();
               },
               child: const Text("Checkout"),
             ),

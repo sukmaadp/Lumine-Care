@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,7 +13,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
-  void _login() {
+  Future<void> _login() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
@@ -23,7 +24,14 @@ class _LoginPageState extends State<LoginPage> {
     } else if (password.length < 6) {
       _showMessage("Password minimal 6 karakter");
     } else {
-      //Navigasi ke Dashboard dengan email user
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_email', email);
+      await prefs.setString(
+        'user_name',
+        email.split('@')[0],
+      ); // ✅ simpan nama depan
+
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/dashboard', arguments: email);
     }
   }
@@ -66,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 15),
                     const Text(
-                      "Welcome to Luminé",
+                      "Welcome to Luminé Care",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

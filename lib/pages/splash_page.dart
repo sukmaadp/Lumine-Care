@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -16,22 +17,27 @@ class _SplashPageState extends State<SplashPage>
   @override
   void initState() {
     super.initState();
-
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     );
-
     _fadeAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-
     _controller.forward();
 
-    //Pindah otomatis ke Login
-    Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/login');
-      }
-    });
+    Timer(const Duration(seconds: 3), _checkLoginStatus);
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('user_email');
+
+    if (!mounted) return;
+
+    if (email != null && email.isNotEmpty) {
+      Navigator.pushReplacementNamed(context, '/dashboard', arguments: email);
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
   }
 
   @override
@@ -51,7 +57,6 @@ class _SplashPageState extends State<SplashPage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //Logo Aplikasi
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: Image.asset(
@@ -62,10 +67,8 @@ class _SplashPageState extends State<SplashPage>
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                //Nama Aplikasi
                 const Text(
-                  "Luminé",
+                  "Luminé Care",
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -74,15 +77,11 @@ class _SplashPageState extends State<SplashPage>
                   ),
                 ),
                 const SizedBox(height: 8),
-
-                //Nama Pembuat
                 const Text(
                   "Creat by: Sukma Dwi Pangesti",
                   style: TextStyle(fontSize: 16, color: Colors.white70),
                 ),
                 const SizedBox(height: 30),
-
-                //Loading Indicator
                 const CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),

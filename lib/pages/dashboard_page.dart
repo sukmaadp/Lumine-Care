@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_application_1/pages/settings_page.dart';
+import 'package:flutter_application_1/pages/profile_page.dart';
+import 'package:flutter_application_1/pages/cart_page.dart';
+import 'package:flutter_application_1/pages/detail_page.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart'; // ✅ Tambahkan ini untuk format rupiah
 import '../model/product.dart';
 import '../model/cart.dart';
-import 'detail_page.dart';
-import 'cart_page.dart';
-import 'profile_page.dart';
-import 'settings_page.dart';
 
+/// ================= Custom Top Bar =================
 class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   final int cartCount;
   final Function(String) onSearch;
@@ -59,17 +63,12 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                   side: const BorderSide(color: Colors.purple),
                   foregroundColor: Colors.purple,
                 ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
+                onPressed: () => Scaffold.of(context).openDrawer(),
                 icon: const Icon(Icons.menu, size: 18),
                 label: const Text("Menu", style: TextStyle(fontSize: 14)),
               ),
             ),
-
             const SizedBox(width: 8),
-
-            // Judul di-expand biar di tengah
             Expanded(
               child: Center(
                 child: Text(
@@ -85,12 +84,9 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
             ),
-
-            // Area kanan (search + profile + cart)
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Search box
                 Container(
                   width: searchWidth,
                   height: 36,
@@ -118,10 +114,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                     ],
                   ),
                 ),
-
                 const SizedBox(width: 8),
-
-                // Profile icon
                 IconButton(
                   icon: const Icon(Icons.person, color: Colors.purple),
                   onPressed: () {
@@ -136,8 +129,6 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                     );
                   },
                 ),
-
-                // Cart icon dengan badge
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -186,7 +177,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(60);
 }
 
-/// Halaman Dashboard
+/// ================= Dashboard Page =================
 class DashboardPage extends StatefulWidget {
   final String email;
   const DashboardPage({super.key, required this.email});
@@ -197,6 +188,29 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   String searchQuery = "";
+  String userName = "";
+  String userEmail = "";
+
+  // ✅ Tambahkan formatter untuk format rupiah
+  final NumberFormat currencyFormat = NumberFormat.currency(
+    locale: 'id_ID',
+    symbol: 'Rp ',
+    decimalDigits: 0,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+  }
+
+  Future<void> _loadUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('user_name') ?? widget.email.split('@')[0];
+      userEmail = prefs.getString('user_email') ?? widget.email;
+    });
+  }
 
   final List<Product> products = [
     // Skincare
@@ -230,7 +244,6 @@ class _DashboardPageState extends State<DashboardPage> {
       price: 95000,
       icon: Icons.nightlight_round,
     ),
-
     // Haircare
     HaircareProduct(
       name: "Shampoo - Makarizo",
@@ -262,7 +275,6 @@ class _DashboardPageState extends State<DashboardPage> {
       price: 89000,
       icon: Icons.eco,
     ),
-
     // Bodycare
     BodycareProduct(
       name: "Body Lotion - Vaseline",
@@ -290,26 +302,22 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     final cart = Provider.of<CartModel>(context);
 
-    // filter sederhana
     final filtered = products.where((p) {
       final q = searchQuery.toLowerCase();
       return p.name.toLowerCase().contains(q) ||
           p.category.toLowerCase().contains(q);
     }).toList();
 
-    final skincare = filtered.where((p) => p.category == "Skincare").toList();
-    final haircare = filtered.where((p) => p.category == "Haircare").toList();
-    final bodycare = filtered.where((p) => p.category == "Bodycare").toList();
-
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: Drawer(
         child: ListView(
+          padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
               decoration: const BoxDecoration(color: Colors.purple),
-              accountName: Text(widget.email.split('@')[0]),
-              accountEmail: Text(widget.email),
+              accountName: Text(userName),
+              accountEmail: Text(userEmail),
               currentAccountPicture: const CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Icon(Icons.person, color: Colors.purple, size: 40),
@@ -327,12 +335,10 @@ class _DashboardPageState extends State<DashboardPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => ProfilePage(
-                      email: widget.email,
-                      name: widget.email.split('@')[0],
-                    ),
+                    builder: (_) =>
+                        ProfilePage(name: userName, email: userEmail),
                   ),
-                );
+                ).then((_) => _loadUserInfo());
               },
             ),
             ListTile(
@@ -345,6 +351,12 @@ class _DashboardPageState extends State<DashboardPage> {
                 );
               },
             ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text("Logout"),
+              onTap: () => Navigator.pushReplacementNamed(context, '/login'),
+            ),
           ],
         ),
       ),
@@ -355,83 +367,56 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       body: ListView(
         padding: const EdgeInsets.all(12),
-        children: [
-          _buildSection("Skincare", skincare, cart),
-          _buildSection("Haircare", haircare, cart),
-          _buildSection("Bodycare", bodycare, cart),
-        ],
+        children: filtered.map((p) => _buildProductCard(p, cart)).toList(),
       ),
     );
   }
 
-  Widget _buildSection(String title, List<Product> list, CartModel cart) {
-    if (list.isEmpty) return const SizedBox.shrink();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-          margin: const EdgeInsets.only(top: 10, bottom: 4),
-          decoration: BoxDecoration(
-            color: Colors.purple.shade50,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.purple,
-            ),
-          ),
-        ),
-        ...list.map((p) => _buildProductCard(p, cart)).toList(),
-      ],
-    );
-  }
-
   Widget _buildProductCard(Product p, CartModel cart) {
-    return Card(
+    return GFCard(
       margin: const EdgeInsets.symmetric(vertical: 6),
+      elevation: 6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 3,
-      child: ListTile(
-        leading: CircleAvatar(
-          radius: 22,
+      title: GFListTile(
+        avatar: CircleAvatar(
           backgroundColor: Colors.purple.shade50,
           child: Icon(p.icon, color: Colors.purple),
         ),
-        title: Text(
-          p.name,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+        titleText: p.name,
+        subTitleText: currencyFormat.format(p.price), // ✅ Format rupiah
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => DetailPage(product: p)),
         ),
-        subtitle: Text("Rp ${p.price.toStringAsFixed(0)}"),
-        trailing: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.purple,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+      ),
+      content: const Text(
+        "Produk skincare dan perawatan terbaik untukmu.",
+        style: TextStyle(fontSize: 14),
+      ),
+      buttonBar: GFButtonBar(
+        children: [
+          GFButton(
+            onPressed: () {
+              cart.add(p);
+              GFToast.showToast(
+                "${p.name} ditambahkan ke keranjang",
+                context,
+                toastDuration: 3,
+                backgroundColor: GFColors.SUCCESS,
+                textStyle: const TextStyle(color: Colors.white),
+              );
+            },
+            text: "Tambah",
+            icon: const Icon(
+              Icons.add_shopping_cart,
+              color: Colors.white,
+              size: 18,
             ),
+            color: GFColors.SUCCESS,
+            size: GFSize.MEDIUM,
+            shape: GFButtonShape.pills,
           ),
-          onPressed: () {
-            cart.add(p);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text("${p.name} ditambahkan ke keranjang"),
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-          },
-          icon: const Icon(Icons.add_shopping_cart, size: 18),
-          label: const Text("Tambah"),
-        ),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => DetailPage(product: p)),
-          );
-        },
+        ],
       ),
     );
   }

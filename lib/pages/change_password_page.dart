@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -8,9 +9,30 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  final oldPassController = TextEditingController();
-  final newPassController = TextEditingController();
-  final confirmPassController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+  final TextEditingController confirmController = TextEditingController();
+
+  Future<void> _savePassword() async {
+    if (passController.text != confirmController.text ||
+        passController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Password tidak sama atau kosong"),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+      return;
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_password', passController.text);
+
+    if (!mounted) return;
+    Navigator.pop(context);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text("Password berhasil diubah")));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,20 +42,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         backgroundColor: Colors.purple,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             TextField(
-              controller: oldPassController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: "Password Lama",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: newPassController,
+              controller: passController,
               obscureText: true,
               decoration: const InputDecoration(
                 labelText: "Password Baru",
@@ -42,45 +55,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             ),
             const SizedBox(height: 16),
             TextField(
-              controller: confirmPassController,
+              controller: confirmController,
               obscureText: true,
               decoration: const InputDecoration(
-                labelText: "Konfirmasi Password Baru",
+                labelText: "Konfirmasi Password",
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-                foregroundColor: Colors.white, // ✅ teks putih
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 14,
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+              onPressed: _savePassword,
+              child: const Text(
+                "Simpan",
+                style: TextStyle(color: Colors.white),
               ),
-              onPressed: () {
-                if (newPassController.text == confirmPassController.text) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Password berhasil diubah")),
-                  );
-                  Navigator.pop(context);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Konfirmasi password tidak cocok"),
-                    ),
-                  );
-                }
-              },
-              child: const Text("Simpan"),
             ),
           ],
         ),

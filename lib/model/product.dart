@@ -31,7 +31,7 @@ class Product {
   String get description => _description;
   double get rating => _rating;
 
-  /// Setter 
+  /// Setter
   set name(String value) {
     if (value.isNotEmpty) _name = value;
   }
