@@ -142,7 +142,7 @@ class DetailPage extends StatelessWidget {
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.purple,
-                  foregroundColor: Colors.white, // ✅ biar tulisan & icon jelas
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     vertical: 16,
                     horizontal: 24,
