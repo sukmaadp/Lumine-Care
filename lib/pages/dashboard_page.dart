@@ -10,7 +10,10 @@ import 'package:intl/intl.dart'; // ✅ Tambahkan ini untuk format rupiah
 import '../model/product.dart';
 import '../model/cart.dart';
 
+<<<<<<< HEAD
 /// ================= Custom Top Bar =================
+=======
+>>>>>>> 908f62806a50c4e3bcf7afd957b7cf64fdb5c0f2
 class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   final int cartCount;
   final Function(String) onSearch;
@@ -63,12 +66,25 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                   side: const BorderSide(color: Colors.purple),
                   foregroundColor: Colors.purple,
                 ),
+<<<<<<< HEAD
                 onPressed: () => Scaffold.of(context).openDrawer(),
+=======
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+>>>>>>> 908f62806a50c4e3bcf7afd957b7cf64fdb5c0f2
                 icon: const Icon(Icons.menu, size: 18),
                 label: const Text("Menu", style: TextStyle(fontSize: 14)),
               ),
             ),
+<<<<<<< HEAD
             const SizedBox(width: 8),
+=======
+
+            const SizedBox(width: 8),
+
+            // Judul di-expand biar di tengah
+>>>>>>> 908f62806a50c4e3bcf7afd957b7cf64fdb5c0f2
             Expanded(
               child: Center(
                 child: Text(
@@ -84,9 +100,18 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
             ),
+<<<<<<< HEAD
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
+=======
+
+            // Area kanan (search + profile + cart)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Search box
+>>>>>>> 908f62806a50c4e3bcf7afd957b7cf64fdb5c0f2
                 Container(
                   width: searchWidth,
                   height: 36,
@@ -115,6 +140,11 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
+<<<<<<< HEAD
+=======
+
+                // Profile icon
+>>>>>>> 908f62806a50c4e3bcf7afd957b7cf64fdb5c0f2
                 IconButton(
                   icon: const Icon(Icons.person, color: Colors.purple),
                   onPressed: () {
@@ -177,7 +207,11 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(60);
 }
 
+<<<<<<< HEAD
 /// ================= Dashboard Page =================
+=======
+/// Halaman Dashboard
+>>>>>>> 908f62806a50c4e3bcf7afd957b7cf64fdb5c0f2
 class DashboardPage extends StatefulWidget {
   final String email;
   const DashboardPage({super.key, required this.email});

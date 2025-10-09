@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+<<<<<<< HEAD
 import 'package:shared_preferences/shared_preferences.dart';
 
+=======
+>>>>>>> 908f62806a50c4e3bcf7afd957b7cf64fdb5c0f2
 import 'model/cart.dart';
 import 'pages/splash_page.dart';
 import 'pages/login_page.dart';

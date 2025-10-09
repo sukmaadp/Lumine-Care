@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     } else if (password.length < 6) {
       _showMessage("Password minimal 6 karakter");
     } else {
+<<<<<<< HEAD
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('user_email', email);
       await prefs.setString(
@@ -32,6 +33,9 @@ class _LoginPageState extends State<LoginPage> {
       ); // ✅ simpan nama depan
 
       if (!mounted) return;
+=======
+      //Navigasi ke Dashboard dengan email user
+>>>>>>> 908f62806a50c4e3bcf7afd957b7cf64fdb5c0f2
       Navigator.pushReplacementNamed(context, '/dashboard', arguments: email);
     }
   }

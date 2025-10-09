@@ -58,11 +58,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
+<<<<<<< HEAD
               style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
               onPressed: _saveProfile,
               child: const Text(
                 "Simpan Perubahan",
                 style: TextStyle(color: Colors.white),
+=======
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+                foregroundColor: Colors.white, 
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 14,
+                ), 
+                textStyle: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30), 
+                ),
+>>>>>>> 908f62806a50c4e3bcf7afd957b7cf64fdb5c0f2
               ),
             ),
           ],
